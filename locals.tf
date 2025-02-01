@@ -10,7 +10,19 @@ locals {
 
     items = jsondecode(data.http.get_price.response_body)["Items"]
     
-    unit_price = length(local.items) == 1 ? local.items[0]["unitPrice"] : 0
-    currency_code = length(local.items) == 1 ? local.items[0]["currencyCode"] : "N/A"
+#     unit_price = length(local.items) == 1 ? local.items[0]["unitPrice"] : 0
+#     currency_code = length(local.items) == 1 ? local.items[0]["currencyCode"] : "N/A"
+
+    spot_price = {
+        for i,v in local.items: 
+            "SpotPrice" => {
+                                "location": var.location,
+                                "arm_sku_name": var.arm_sku_name,
+                                "unitPrice": v["unitPrice"],
+                                "currencyCode": v["currencyCode"]
+                            }
+            
+            if lookup(v, "effectiveEndDate", "N/A") == "N/A"
+        }
 }
 
