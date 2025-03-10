@@ -13,16 +13,16 @@ locals {
 #     unit_price = length(local.items) == 1 ? local.items[0]["unitPrice"] : 0
 #     currency_code = length(local.items) == 1 ? local.items[0]["currencyCode"] : "N/A"
 
-    spot_price = {
+    data = {
         for i,v in local.items: 
-            "SpotPrice" => {
+            "Data" => {
                                 "location": var.location,
                                 "arm_sku_name": var.arm_sku_name,
                                 "unitPrice": v["unitPrice"],
                                 "currencyCode": v["currencyCode"]
                             }
             
-            if lookup(v, "effectiveEndDate", "N/A") == "N/A"
+            if lookup(v, "effectiveEndDate", "N/A") != "N/A"
         }
 }
 

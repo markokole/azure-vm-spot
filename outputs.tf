@@ -14,6 +14,6 @@
 #     value = local.currency_code
 # }
 
-output spot_price {
-    value = local.spot_price["SpotPrice"]
+output data {
+    value = local.data["Data"]
 }
