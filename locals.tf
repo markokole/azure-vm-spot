@@ -14,7 +14,7 @@ locals {
 #     currency_code = length(local.items) == 1 ? local.items[0]["currencyCode"] : "N/A"
 
     data = {
-        for i,v in local.items: 
+        for i,v in local.items:
             "Data" => {
                                 "location": var.location,
                                 "arm_sku_name": var.arm_sku_name,
@@ -22,7 +22,7 @@ locals {
                                 "currencyCode": v["currencyCode"]
                             }
             
-            if lookup(v, "effectiveEndDate", "N/A") != "N/A"
+            # if lookup(v, "effectiveEndDate", "N/A") != "N/A"
         }
 }
 
