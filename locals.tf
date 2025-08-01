@@ -22,7 +22,7 @@ locals {
                                 "currencyCode": v["currencyCode"]
                             }
             
-            if lookup(v, "effectiveEndDate", "N/A") != "N/A"
+            if lookup(v, "effectiveEndDate", "N/A") == "N/A"
         }
 }
 
