@@ -21,8 +21,13 @@ locals {
                                 "unitPrice": v["unitPrice"],
                                 "currencyCode": v["currencyCode"]
                             }
-            
             if lookup(v, "effectiveEndDate", "N/A") == "N/A"
         }
+
+    error_message = {
+        "Message": "No data found. Check inputs.",
+        "Region": var.location,
+        "arm_sku_name": var.arm_sku_name
+    }
 }
 
