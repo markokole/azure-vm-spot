@@ -24,21 +24,23 @@ Two outputs are available:
 Valid request returns a response like this (_list is shortened_):
 ```json
 spots_with_price = tolist([
-  tomap({
-    "armSkuName" = "Standard_D64plds_v5"
-    "productName" = "Virtual Machines Dpldsv5 Series"
-    "skuName" = "Standard_D64plds_v5 Spot"
-    "unitPrice" = "0.450943"
+ tomap({
+    "armSkuName" = "Standard_D32-8s_v3"
+    "productName" = "Virtual Machines DSv3 Series"
+    "skuName" = "D32-8s v3 Spot"
+    "skuNameUrl" = "https://learn.microsoft.com/en-us/search/?scope=Azure&terms=Standard_D32-8s_v3"
+    "unitPrice" = "0.25704"
   }),
   tomap({
-    "armSkuName" = "Standard_FX12ms_v2"
-    "productName" = "Virtual Machines FXmsv2 Series"
-    "skuName" = "FX12ms v2 Spot"
-    "unitPrice" = "0.26664"
+    "armSkuName" = "Standard_M32dms_v2"
+    "productName" = "Virtual Machines MdSv2 Series"
+    "skuName" = "M32dms_v2 Spot"
+    "skuNameUrl" = "https://learn.microsoft.com/en-us/search/?scope=Azure&terms=Standard_M32dms_v2"
+    "unitPrice" = "1.311766"
   }),
 ])
 ```
-
+**skuNameUrl** sends you to Azure's search result page for search word armSkuName. There you can easily navigate to the size series which the selected skuName is a part of.
 
 Invalid request returns a response like this:
 
@@ -72,4 +74,19 @@ spot_price = {
   "Region" = "swedencentral"
   "arm_sku_name" = "Invalid_sku_name"
 }
+```
+
+## Parsing spots with price output with jq
+
+```shell
+SPOTS=$(terraform output -json spots_with_price)
+```
+### Most expensive spot instance in the region
+```shell
+echo $SPOTS | jq '([ .[].unitPrice | tonumber] | max | tostring) as $m | map(select(.unitPrice== $m))'
+```
+
+### Cheapest spot instance in the region
+```shell
+echo $SPOTS | jq '([ .[].unitPrice | tonumber] | min | tostring) as $m | map(select(.unitPrice== $m))'
 ```

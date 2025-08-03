@@ -35,11 +35,13 @@ locals {
         for k, v in local.instances_items:
             {
                 "productName": v["productName"],
+                "skuNameUrl": "https://learn.microsoft.com/en-us/search/?scope=Azure&terms=${v["armSkuName"]}",
                 "skuName": v["skuName"],
                 "armSkuName": v["armSkuName"],                                
                  "unitPrice": v["unitPrice"]
             }
         ]
+
 
     region_error_message = [{
         "Message": "No data found. Check region.",
