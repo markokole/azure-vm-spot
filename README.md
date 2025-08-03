@@ -22,7 +22,7 @@ Two outputs are available:
 ## Fetching list of all spot instances with prices in specific region
 
 Valid request returns a response like this (_list is shortened_):
-```json
+```shell
 spots_with_price = tolist([
  tomap({
     "armSkuName" = "Standard_D32-8s_v3"
@@ -44,7 +44,7 @@ spots_with_price = tolist([
 
 Invalid request returns a response like this:
 
-```json
+```shell
 spots_with_price = tolist([
   {
     "Message" = "No data found. Check region."
@@ -57,7 +57,7 @@ spots_with_price = tolist([
 
 If valid region and arm_sku_name are submitted, the output will be something like this:
 
-```json
+```shell
 spot_price = tomap({
   "arm_sku_name" = "Standard_A8_v2"
   "currencyCode" = "USD"
@@ -68,7 +68,7 @@ spot_price = tomap({
 
 If one of the inputs is invalid, the output informs you:
 
-```json
+```shell
 spot_price = {
   "Message" = "No data found. Check inputs."
   "Region" = "swedencentral"
