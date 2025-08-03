@@ -1,6 +1,7 @@
 # azure-vm-spot
  
 ## Import module to your Terraform script
+
 ```json
 module spot_node_pool {
     source          = "github.com/markokole/azure-vm-spot"
@@ -18,7 +19,7 @@ Two outputs are available:
 
 **All prices are are in USD and the unit of Measure is 1 hour!**
 
-### Fetching list of all spot instances with prices in specific region
+## Fetching list of all spot instances with prices in specific region
 
 Valid request returns a response like this (_list is shortened_):
 ```json
@@ -50,7 +51,7 @@ spots_with_price = tolist([
 ])
 ```
 
-### Fetching spot price for spot instance in region
+## Fetching spot price for spot instance in region
 
 If valid region and arm_sku_name are submitted, the output will be something like this:
 
