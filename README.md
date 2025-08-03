@@ -2,7 +2,7 @@
  
 ## Import module to your Terraform script
 
-```json
+```shell
 module spot_node_pool {
     source          = "github.com/markokole/azure-vm-spot"
     region          = var.region
