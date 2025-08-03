@@ -17,9 +17,16 @@ Two outputs are available:
 - **spots_with_price** - returns a list of all spots and prices in region
 - **spot_price** - returns price for given spot instance
 
-**All prices are are in USD and the unit of Measure is 1 hour!**
+**All prices are in USD and the unit of Measure is 1 hour!**
 
 ## Fetching list of all spot instances with prices in specific region
+
+```shell
+module spot_node_pool {
+    source          = "github.com/markokole/azure-vm-spot"
+    region          = var.region
+}
+```
 
 Valid request returns a response like this (_list is shortened_):
 ```shell
@@ -40,20 +47,28 @@ spots_with_price = tolist([
   }),
 ])
 ```
-**skuNameUrl** sends you to Azure's search result page for search word armSkuName. There you can easily navigate to the size series which the selected skuName is a part of.
+**skuNameUrl** sends you to Azure's search result page for search word armSkuName. There you can easily navigate to the size series which the selected skuName belongs to.
 
-Invalid request returns a response like this:
+Invalid request returns a response like this (value for region was *localpizzaplace*):
 
 ```shell
 spots_with_price = tolist([
   {
     "Message" = "No data found. Check region."
-    "Region" = "gfjh"
+    "Region" = "localpizzaplace"
   },
 ])
 ```
 
 ## Fetching spot price for spot instance in region
+
+```shell
+module spot_node_pool {
+    source          = "github.com/markokole/azure-vm-spot"
+    region          = "swedencentral"
+    arm_sku_name    = "Standard_A8_v2"
+}
+```
 
 If valid region and arm_sku_name are submitted, the output will be something like this:
 
@@ -69,10 +84,18 @@ spot_price = tomap({
 If one of the inputs is invalid, the output informs you:
 
 ```shell
+module spot_node_pool {
+    source          = "github.com/markokole/azure-vm-spot"
+    region          = "swedencentral"
+    arm_sku_name    = "freeinstance4me"
+}
+```
+
+```shell
 spot_price = {
   "Message" = "No data found. Check inputs."
   "Region" = "swedencentral"
-  "arm_sku_name" = "Invalid_sku_name"
+  "arm_sku_name" = "freeinstance4me"
 }
 ```
 
@@ -83,10 +106,35 @@ SPOTS=$(terraform output -json spots_with_price)
 ```
 ### Most expensive spot instance in the region
 ```shell
-echo $SPOTS | jq '([ .[].unitPrice | tonumber] | max | tostring) as $m | map(select(.unitPrice== $m))'
+echo $SPOTS | jq '([ .[].unitPrice | tonumber] | max | tostring) as $m | map(select(.unitPrice== $m))[0]'
 ```
+
+Output:
+
+```shell
+{
+  "armSkuName": "Standard_ND96isr_H200_v5",
+  "productName": "Virtual Machines NDsrH200v5 Series",
+  "skuName": "ND96isrH200v5 Spot",
+  "skuNameUrl": "https://learn.microsoft.com/en-us/search/?scope=Azure&terms=Standard_ND96isr_H200_v5",
+  "unitPrice": "110.272"
+}
+```
+
 
 ### Cheapest spot instance in the region
 ```shell
-echo $SPOTS | jq '([ .[].unitPrice | tonumber] | min | tostring) as $m | map(select(.unitPrice== $m))'
+echo $SPOTS | jq '([ .[].unitPrice | tonumber] | min | tostring) as $m | map(select(.unitPrice== $m))[0]'
+```
+
+Output:
+
+```shell
+{
+  "armSkuName": "Standard_A1_v2",
+  "productName": "Virtual Machines Av2 Series",
+  "skuName": "A1 v2 Spot",
+  "skuNameUrl": "https://learn.microsoft.com/en-us/search/?scope=Azure&terms=Standard_A1_v2",
+  "unitPrice": "0.006458"
+}
 ```
