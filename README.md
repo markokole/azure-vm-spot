@@ -66,7 +66,7 @@ spot_price = tomap({
 If one of the inputs is invalid, the output informs you:
 
 ```json
-spots_price = {
+spot_price = {
   "Message" = "No data found. Check inputs."
   "Region" = "swedencentral"
   "arm_sku_name" = "Invalid_sku_name"
